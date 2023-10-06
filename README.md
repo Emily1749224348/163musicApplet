@@ -1,6 +1,26 @@
-# Vue 3 + TypeScript + Vite
+
+
+# 网易云音乐h5
+
+**由于top/list接口已废弃，所以热门榜单详情暂时未能写成**
 
 This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+
+## 技术栈
+
+vue3+vite+ts
+
+状态管理：pinia
+
+样式库：vant
+
+sass
+
+autoprefixer
+
+windicss
+
+consola
 
 ## Recommended IDE Setup
 
@@ -16,3 +36,6 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+
+
+
