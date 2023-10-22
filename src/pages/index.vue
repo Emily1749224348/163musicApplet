@@ -1,15 +1,18 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 // import SearchBox from "@/components/SearchBox.vue"
 import {useRouter} from "vue-router"
 import { onMounted, ref,toRef} from "vue";
 import { getToplist } from "@/service/requests";
-import { reactive } from "vue";
-import ListCard from "@/components/ListCard.vue";
 
+import { setgroups } from "process";
+import { Ref } from "vue";
 
+interface NewObj{
+    value:any
+}
 //---------------路由跳转---------------
 const router = useRouter();
-function goToSearch(){
+function goToSearch():void{
     router.push({path:"/search"})
 }
 function goToToplist(id){
@@ -17,17 +20,21 @@ function goToToplist(id){
 }
 
 let toplists = ref({});
+
+let isLoading = ref(true);//判断加载状态的变量
 onMounted(async ()=>{
     let result = await getToplist();
     
     toplists.value=await result.data.list.slice(0,4);
    
+    isLoading.value = false;
 })
+
 
 </script>
 <template>
     <Suspense>
-        <template #default>
+        <template #default v-if="!isLoading">
            <div>
             <header>
             <h1 class="title">网易云音乐</h1>
@@ -46,10 +53,11 @@ onMounted(async ()=>{
                
             </section>
             </main> 
+            
         </div> 
+       
         </template>
-        
-        <template #fallback>
+        <template #fallback v-else>
             
             <van-skeleton title :row="3" />
         </template>
@@ -63,6 +71,4 @@ header{
         text-align:center;
     }
 }
-
-
 </style>

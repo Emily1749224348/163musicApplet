@@ -10,27 +10,23 @@ const router = useRouter();
 function back(){
     router.back();
 }
-function goToPlaymusic(id){
+function goToPlaymusic(id:number):void{
     router.push({path:"/playmusic",query:{id:id}})
 }
 
 //---------------获取热搜榜
 let searchHot = ref([]);
 
-onMounted(async()=>{
-    let result = await getSearchHotDetail();
-    // console.log(result);
-    if(result.data.code===200){
-        searchHot.value = result.data.data;
-    }
-})
+
 
 //--------------------搜索词
-let Search = reactive({
+interface type1  {ifSearch:boolean; keywords:String; type:String}
+let Search :type1 = reactive({
     ifSearch:false,//是否正在搜索，这决定main区域内容
     keywords:"",
     type:'',//提示还是结果 suggest result
-});
+} );
+
 
 //-----------------按下搜索键、点击热搜内容、点击搜索提示
 let searchResult = ref([]);
@@ -67,13 +63,24 @@ async function searchSuggest(){
         // console.log(suggest.value);
 }
 //-------------输入框失去焦点
-function offfocus(){
+function offfocus():void {
     if(Search.keywords==''){
         Search.ifSearch = false;
         suggest.value = [];
         Search.type='';
     }
 }
+
+let isLoading = ref(true);
+onMounted(async()=>{
+    let result = await getSearchHotDetail();
+    // console.log(result);
+    if(result.data.code===200){
+        searchHot.value = result.data.data;
+        console.log(searchHot.value)
+        isLoading = false;
+    }
+})
 </script>
 <template>
     <header>
@@ -87,6 +94,7 @@ function offfocus(){
     </header>
     
     <main>
+        <!-- 当输入内容时显示搜索关键词推荐 -->
         <div class="search" v-if="Search.ifSearch"> 
             <p class="keywords"> 搜索:"{{ Search.keywords }}"</p>
             <Suspense>
@@ -120,13 +128,15 @@ function offfocus(){
                 
                 <template #fallback>
                     加载中...
+                    <div v-if="isLoading"></div>
                 </template>
+
             </Suspense>
         </div>
         <!-- ------- ------- --------热搜榜 ----------- - ---- -- - - - -->
         <div v-else>
             <Suspense>
-                <template #default>
+                <template #default v-if="!isLoading">
                     <div>
                   <p>热搜榜</p>
                 <div class="searchHot"
@@ -140,7 +150,9 @@ function offfocus(){
                 </div>
                 </template>
                 
-            <template #fallback>加载中</template>
+            <template #fallback v-else>
+                加载中
+            </template>
             </Suspense>
             
         </div>
@@ -180,7 +192,7 @@ main{
         font-size:18px;
         margin-bottom:2px;
     }
-    /*******************搜索结果 */
+    /*          搜索结果          */
     
    
     .searchResult{

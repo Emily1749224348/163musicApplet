@@ -12,7 +12,7 @@ import { onMounted ,ref ,reactive,toRef} from 'vue';
 import useStore from "@/store/index"
 import {getMusicUrl,getMusicDetail, getLyrics,getComments} from "@/service/requests"
 // 提示
-import { showDialog, showFailToast, showSuccessToast } from 'vant';
+import { showDialog} from 'vant';
  //   路由跳转
 const router = useRouter();
 const route = useRoute();
